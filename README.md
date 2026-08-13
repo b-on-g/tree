@@ -23,9 +23,15 @@ server
 |---|---|---|---|---|---|---|
 | [TypeScript](https://github.com/hyoo-ru/mam_mol/tree/master/tree2) | ✅ | ✅ | ✅ | ✅ | ✅ | upstream reference |
 | [D](https://github.com/nin-jin/tree.d) | ✅ | ✅ | — | — | — | upstream, separate lineage |
-| [Rust](./rust) | 🚧 | 🚧 | 🚧 | 🚧 | 🚧 | — |
-| [Go](./go) | 🚧 | 🚧 | 🚧 | 🚧 | 🚧 | — |
-| [Python](./python) | 🚧 | 🚧 | 🚧 | 🚧 | 🚧 | — |
+| [Rust](./rust) | ✅ | ✅ | ✅ | ✅ | ✅ | not published yet |
+| [Go](./go) | ✅ | ✅ | ✅ | ✅ | ✅ | not published yet |
+| [Python](./python) | ✅ | ✅ | ✅ | ✅ | ✅ | not published yet |
+
+All three pass the full corpus. They were also differentially tested against
+each other and against the reference over 618 adversarial inputs held out of the
+corpus: the three ports agree with each other on every one, and the 63 inputs
+where they part company with the reference are all the same documented defect —
+see [Known reference bugs](./SPEC.md#known-reference-bugs).
 
 ## Layout
 

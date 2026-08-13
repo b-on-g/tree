@@ -1,0 +1,65 @@
+[build-system]
+requires = [ "hatchling" ]
+build-backend = "hatchling.build"
+
+[project]
+name = "tree2"
+version = "0.1.0"
+description = "Parser, serializer and AST for the tree format — a whitespace-significant structural format with no escaping rules"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = [ "LICENSE" ]
+keywords = [ "tree", "parser", "serializer", "ast", "config", "mol" ]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Topic :: Software Development :: Compilers",
+	"Topic :: Text Processing :: Markup",
+	"Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/b-on-g/tree2"
+Repository = "https://github.com/b-on-g/tree2"
+Specification = "https://github.com/b-on-g/tree2/blob/master/SPEC.md"
+Reference = "https://github.com/hyoo-ru/mam_mol/tree/master/tree2"
+
+[project.optional-dependencies]
+dev = [
+	"pytest>=8.0",
+	"mypy>=1.11",
+	"ruff>=0.6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [ "tree2" ]
+
+[tool.hatch.build.targets.sdist]
+include = [ "tree2", "tests", "README.md" ]
+
+[tool.pytest.ini_options]
+testpaths = [ "tests" ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [ "E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF" ]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = [ "tree2" ]
