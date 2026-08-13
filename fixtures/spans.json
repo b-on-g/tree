@@ -1,0 +1,319 @@
+[
+	{
+		"name": "inline chain",
+		"uri": "test",
+		"input": "foo bar \\baz\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 13,
+				"col_cp": 1,
+				"length_cp": 13
+			},
+			"kids": [
+				{
+					"type": "foo",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 1,
+						"col": 1,
+						"length": 3,
+						"col_cp": 1,
+						"length_cp": 3
+					},
+					"kids": [
+						{
+							"type": "bar",
+							"value": "",
+							"span": {
+								"uri": "test",
+								"row": 1,
+								"col": 5,
+								"length": 3,
+								"col_cp": 5,
+								"length_cp": 3
+							},
+							"kids": [
+								{
+									"type": "",
+									"value": "baz",
+									"span": {
+										"uri": "test",
+										"row": 1,
+										"col": 10,
+										"length": 3,
+										"col_cp": 10,
+										"length_cp": 3
+									},
+									"kids": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"name": "nested",
+		"uri": "test",
+		"input": "a\n\tb\n\t\tc\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 9,
+				"col_cp": 1,
+				"length_cp": 9
+			},
+			"kids": [
+				{
+					"type": "a",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 1,
+						"col": 1,
+						"length": 1,
+						"col_cp": 1,
+						"length_cp": 1
+					},
+					"kids": [
+						{
+							"type": "b",
+							"value": "",
+							"span": {
+								"uri": "test",
+								"row": 2,
+								"col": 2,
+								"length": 1,
+								"col_cp": 2,
+								"length_cp": 1
+							},
+							"kids": [
+								{
+									"type": "c",
+									"value": "",
+									"span": {
+										"uri": "test",
+										"row": 3,
+										"col": 3,
+										"length": 1,
+										"col_cp": 3,
+										"length_cp": 1
+									},
+									"kids": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"name": "second row",
+		"uri": "test",
+		"input": "a\nb\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 4,
+				"col_cp": 1,
+				"length_cp": 4
+			},
+			"kids": [
+				{
+					"type": "a",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 1,
+						"col": 1,
+						"length": 1,
+						"col_cp": 1,
+						"length_cp": 1
+					},
+					"kids": []
+				},
+				{
+					"type": "b",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 2,
+						"col": 1,
+						"length": 1,
+						"col_cp": 1,
+						"length_cp": 1
+					},
+					"kids": []
+				}
+			]
+		}
+	},
+	{
+		"name": "data after types",
+		"uri": "test",
+		"input": "a b \\text\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 10,
+				"col_cp": 1,
+				"length_cp": 10
+			},
+			"kids": [
+				{
+					"type": "a",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 1,
+						"col": 1,
+						"length": 1,
+						"col_cp": 1,
+						"length_cp": 1
+					},
+					"kids": [
+						{
+							"type": "b",
+							"value": "",
+							"span": {
+								"uri": "test",
+								"row": 1,
+								"col": 3,
+								"length": 1,
+								"col_cp": 3,
+								"length_cp": 1
+							},
+							"kids": [
+								{
+									"type": "",
+									"value": "text",
+									"span": {
+										"uri": "test",
+										"row": 1,
+										"col": 6,
+										"length": 4,
+										"col_cp": 6,
+										"length_cp": 4
+									},
+									"kids": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"name": "base indent stripped",
+		"uri": "test",
+		"input": "\n\t\ta b\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 7,
+				"col_cp": 1,
+				"length_cp": 7
+			},
+			"kids": [
+				{
+					"type": "a",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 2,
+						"col": 3,
+						"length": 1,
+						"col_cp": 3,
+						"length_cp": 1
+					},
+					"kids": [
+						{
+							"type": "b",
+							"value": "",
+							"span": {
+								"uri": "test",
+								"row": 2,
+								"col": 5,
+								"length": 1,
+								"col_cp": 5,
+								"length_cp": 1
+							},
+							"kids": []
+						}
+					]
+				}
+			]
+		}
+	},
+	{
+		"name": "unicode columns",
+		"uri": "test",
+		"input": "привет \\мир\n",
+		"tree": {
+			"type": "",
+			"value": "",
+			"span": {
+				"uri": "test",
+				"row": 1,
+				"col": 1,
+				"length": 12,
+				"col_cp": 1,
+				"length_cp": 12
+			},
+			"kids": [
+				{
+					"type": "привет",
+					"value": "",
+					"span": {
+						"uri": "test",
+						"row": 1,
+						"col": 1,
+						"length": 6,
+						"col_cp": 1,
+						"length_cp": 6
+					},
+					"kids": [
+						{
+							"type": "",
+							"value": "мир",
+							"span": {
+								"uri": "test",
+								"row": 1,
+								"col": 9,
+								"length": 3,
+								"col_cp": 9,
+								"length_cp": 3
+							},
+							"kids": []
+						}
+					]
+				}
+			]
+		}
+	}
+]

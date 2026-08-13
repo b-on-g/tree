@@ -1,0 +1,44 @@
+[
+	{
+		"name": "kids having path",
+		"input": "r\n\ta\n\t\tx\n\tb\n\t\ty\n",
+		"path": [
+			"x"
+		],
+		"value": null,
+		"has_value": false,
+		"output": "r a x\n"
+	},
+	{
+		"name": "kids having path with value",
+		"input": "r\n\ta x \\1\n\tb x \\2\n",
+		"path": [
+			"x",
+			null
+		],
+		"value": "1",
+		"has_value": true,
+		"output": "r a x \\1\n"
+	},
+	{
+		"name": "no match",
+		"input": "r\n\ta\n\tb\n",
+		"path": [
+			"z"
+		],
+		"value": null,
+		"has_value": false,
+		"output": "r\n"
+	},
+	{
+		"name": "value mismatch",
+		"input": "r\n\ta x \\1\n",
+		"path": [
+			"x",
+			null
+		],
+		"value": "9",
+		"has_value": true,
+		"output": "r\n"
+	}
+]

@@ -1,0 +1,32 @@
+[
+	{
+		"name": "plain value",
+		"input": "\\hello\n",
+		"text": "hello",
+		"root_text": "hello"
+	},
+	{
+		"name": "value joined with data kids",
+		"input": "a b\n\t\\x\n\t\\y\n",
+		"text": "",
+		"root_text": ""
+	},
+	{
+		"name": "struct kids are ignored",
+		"input": "a\n\t\\x\n\tb\n\t\\y\n",
+		"text": "x\ny",
+		"root_text": ""
+	},
+	{
+		"name": "no kids",
+		"input": "a\n",
+		"text": "",
+		"root_text": ""
+	},
+	{
+		"name": "empty data kids",
+		"input": "a\n\t\\\n\t\\\n",
+		"text": "\n",
+		"root_text": ""
+	}
+]

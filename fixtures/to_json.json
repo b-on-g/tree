@@ -1,0 +1,101 @@
+[
+	{
+		"name": "string",
+		"input": "\\hello\n",
+		"json": "hello"
+	},
+	{
+		"name": "multiline string",
+		"input": "\\a\n\\b\n",
+		"json": "a\nb"
+	},
+	{
+		"name": "number",
+		"input": "1\n",
+		"json": 1
+	},
+	{
+		"name": "negative number",
+		"input": "-1.5\n",
+		"json": -1.5
+	},
+	{
+		"name": "true",
+		"input": "true\n",
+		"json": true
+	},
+	{
+		"name": "false",
+		"input": "false\n",
+		"json": false
+	},
+	{
+		"name": "null",
+		"input": "null\n",
+		"json": null
+	},
+	{
+		"name": "object",
+		"input": "* a \\1\n",
+		"json": {
+			"a": "1"
+		}
+	},
+	{
+		"name": "object with two keys",
+		"input": "* \n\ta \\1\n\tb \\2\n",
+		"json": {
+			"a": "1",
+			"b": "2"
+		}
+	},
+	{
+		"name": "nested object",
+		"input": "* a * b \\1\n",
+		"json": {
+			"a": {
+				"b": "1"
+			}
+		}
+	},
+	{
+		"name": "array",
+		"input": "/ \n\t\\a\n\t\\b\n",
+		"json": [
+			"a",
+			"b"
+		]
+	},
+	{
+		"name": "array of numbers",
+		"input": "/ \n\t1\n\t2\n",
+		"json": [
+			1,
+			2
+		]
+	},
+	{
+		"name": "object with commented key",
+		"input": "* \n\ta \\1\n\t- b \\2\n",
+		"json": {
+			"a": "1"
+		}
+	},
+	{
+		"name": "array with commented item",
+		"input": "/ \n\t\\a\n\t- \\b\n",
+		"json": [
+			"a"
+		]
+	},
+	{
+		"name": "empty object",
+		"input": "*\n",
+		"json": {}
+	},
+	{
+		"name": "empty array",
+		"input": "/\n",
+		"json": []
+	}
+]

@@ -1,0 +1,48 @@
+[
+	{
+		"name": "negative index in select matches nothing",
+		"op": "select",
+		"input": "a\n\tx\n\ty\n",
+		"path": [
+			"a",
+			-1
+		],
+		"output": "",
+		"reference": "pushes an undefined kid, then crashes on serialization"
+	},
+	{
+		"name": "negative index in select, deeper",
+		"op": "select",
+		"input": "a b c d\n",
+		"path": [
+			"a",
+			-2
+		],
+		"output": "",
+		"reference": "pushes an undefined kid, then crashes on serialization"
+	},
+	{
+		"name": "empty update does not create a missing type path",
+		"op": "update",
+		"input": "a b\n",
+		"update": [],
+		"path": [
+			"a",
+			"z",
+			"q"
+		],
+		"output": "a b\n",
+		"reference": "creates `z` anyway, because an empty array is truthy in JS"
+	},
+	{
+		"name": "empty update leaves a missing single-step path alone",
+		"op": "update",
+		"input": "a b\n",
+		"update": [],
+		"path": [
+			"z"
+		],
+		"output": "a b\n",
+		"reference": "creates `z` anyway, because an empty array is truthy in JS"
+	}
+]

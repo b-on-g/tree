@@ -1,0 +1,19 @@
+node_modules/
+package-lock.json
+tools/ref.js
+
+# rust
+rust/target/
+
+# go
+go/vendor/
+
+# python
+python/.venv/
+python/dist/
+python/build/
+python/*.egg-info/
+python/.pytest_cache/
+python/.mypy_cache/
+python/.ruff_cache/
+__pycache__/

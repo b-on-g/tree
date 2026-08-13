@@ -1,0 +1,162 @@
+[
+	{
+		"name": "empty",
+		"input": "",
+		"output": ""
+	},
+	{
+		"name": "single struct",
+		"input": "foo\n",
+		"output": "foo\n"
+	},
+	{
+		"name": "two structs",
+		"input": "foo\nbar\n",
+		"output": "foo\nbar\n"
+	},
+	{
+		"name": "blank lines are skipped",
+		"input": "foo\n\n\n",
+		"output": "foo\n"
+	},
+	{
+		"name": "only blank lines",
+		"input": "\n\n\n",
+		"output": ""
+	},
+	{
+		"name": "nested by tab",
+		"input": "foo\n\tbar\n",
+		"output": "foo bar\n"
+	},
+	{
+		"name": "deep nesting",
+		"input": "a\n\tb\n\t\tc\n\t\t\td\n",
+		"output": "a b c d\n"
+	},
+	{
+		"name": "siblings under parent",
+		"input": "a\n\tb\n\tc\n",
+		"output": "a\n\tb\n\tc\n"
+	},
+	{
+		"name": "dedent back",
+		"input": "a\n\tb\n\t\tc\nd\n",
+		"output": "a b c\nd\n"
+	},
+	{
+		"name": "inline chain",
+		"input": "foo bar baz\n",
+		"output": "foo bar baz\n"
+	},
+	{
+		"name": "inline chain then data",
+		"input": "foo bar \\pol\n",
+		"output": "foo bar \\pol\n"
+	},
+	{
+		"name": "data node",
+		"input": "\\hello\n",
+		"output": "\\hello\n"
+	},
+	{
+		"name": "empty data node",
+		"input": "\\\n",
+		"output": "\\\n"
+	},
+	{
+		"name": "struct then data sibling",
+		"input": "=foo\n\\bar\n",
+		"output": "=foo\n\\bar\n"
+	},
+	{
+		"name": "multiline data under struct",
+		"input": "foo bar\n\t\\pol\n\t\\men\n",
+		"output": "foo bar\n\t\\pol\n\t\\men\n"
+	},
+	{
+		"name": "data keeps leading spaces",
+		"input": "\\  spaced\n",
+		"output": "\\  spaced\n"
+	},
+	{
+		"name": "data keeps trailing spaces",
+		"input": "\\spaced  \n",
+		"output": "\\spaced  \n"
+	},
+	{
+		"name": "data keeps tabs inside",
+		"input": "\\a\tb\n",
+		"output": "\\a\tb\n"
+	},
+	{
+		"name": "data keeps backslashes inside",
+		"input": "\\a\\b\\\n",
+		"output": "\\a\\b\\\n"
+	},
+	{
+		"name": "type with punctuation",
+		"input": "a.b-c/d:e\n",
+		"output": "a.b-c/d:e\n"
+	},
+	{
+		"name": "type with unicode",
+		"input": "привет мир\n",
+		"output": "привет мир\n"
+	},
+	{
+		"name": "data with unicode",
+		"input": "\\привет мир\n",
+		"output": "\\привет мир\n"
+	},
+	{
+		"name": "data with astral plane",
+		"input": "\\a😀b\n",
+		"output": "\\a😀b\n"
+	},
+	{
+		"name": "type with astral plane",
+		"input": "a😀b\n",
+		"output": "a😀b\n"
+	},
+	{
+		"name": "base indent from first content line",
+		"input": "\n\t\tfoo\n\t\t\tbar\n",
+		"output": "foo bar\n"
+	},
+	{
+		"name": "base indent with deeper first line",
+		"input": "\n\t\t\ta\n\t\t\t\tb\n",
+		"output": "a b\n"
+	},
+	{
+		"name": "kids after inline chain",
+		"input": "a b\n\t\\x\n\t\\y\n",
+		"output": "a b\n\t\\x\n\t\\y\n"
+	},
+	{
+		"name": "struct with both inline and nested kids",
+		"input": "a b\n\tc\n",
+		"output": "a b c\n"
+	},
+	{
+		"name": "json object markers",
+		"input": "* a \\1\n",
+		"output": "* a \\1\n"
+	},
+	{
+		"name": "json array markers",
+		"input": "/ \\a\n",
+		"output": "/ \\a\n"
+	},
+	{
+		"name": "many blank lines between nodes",
+		"input": "a\n\n\nb\n",
+		"output": "a\nb\n"
+	},
+	{
+		"name": "trailing blank line",
+		"input": "a\nb\n\n",
+		"output": "a\nb\n"
+	}
+]

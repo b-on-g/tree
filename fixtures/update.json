@@ -1,0 +1,49 @@
+[
+	{
+		"name": "update to empty deletes",
+		"input": "a b c d\n",
+		"update": [],
+		"path": [
+			"a",
+			"b",
+			"c"
+		],
+		"output": "a b\n"
+	},
+	{
+		"name": "update root",
+		"input": "a b c d\n",
+		"update": [
+			"x"
+		],
+		"path": [],
+		"output": "x\n"
+	},
+	{
+		"name": "update to two nodes",
+		"input": "a b c d\n",
+		"update": [
+			"x",
+			"y"
+		],
+		"path": [
+			"a",
+			"b",
+			"c"
+		],
+		"output": "a b\n\tx\n\ty\n"
+	},
+	{
+		"name": "update missing path creates",
+		"input": "a b\n",
+		"update": [
+			"x"
+		],
+		"path": [
+			"a",
+			"b",
+			"c"
+		],
+		"output": "a b x\n"
+	}
+]

@@ -1,0 +1,146 @@
+[
+	{
+		"name": "too many tabs",
+		"uri": "test",
+		"input": "\n\t\t\t\tfoo\n\t\t\t\t\t\tbar\n",
+		"reason": "Too many tabs",
+		"line": "\t\t\t\t\t\tbar",
+		"span": {
+			"uri": "test",
+			"row": 3,
+			"col": 1,
+			"length": 6,
+			"col_cp": 1,
+			"length_cp": 6
+		},
+		"message": "Too many tabs\ntest#3:1/6\n!!!!!!\n\t\t\t\t\t\tbar"
+	},
+	{
+		"name": "too few tabs",
+		"uri": "test",
+		"input": "\n\t\t\t\t\tfoo\n\t\t\t\tbar\n",
+		"reason": "Too few tabs",
+		"line": "\t\t\t\tbar",
+		"span": {
+			"uri": "test",
+			"row": 3,
+			"col": 1,
+			"length": 4,
+			"col_cp": 1,
+			"length_cp": 4
+		},
+		"message": "Too few tabs\ntest#3:1/4\n!!!!\n\t\t\t\tbar"
+	},
+	{
+		"name": "wrong nodes separator at line start",
+		"uri": "test",
+		"input": "foo\n \tbar\n",
+		"reason": "Wrong nodes separator",
+		"line": " \tbar",
+		"span": {
+			"uri": "test",
+			"row": 2,
+			"col": 1,
+			"length": 2,
+			"col_cp": 1,
+			"length_cp": 2
+		},
+		"message": "Wrong nodes separator\ntest#2:1/2\n!!\n \tbar"
+	},
+	{
+		"name": "wrong nodes separator in the middle",
+		"uri": "test",
+		"input": "foo  bar\n",
+		"reason": "Wrong nodes separator",
+		"line": "foo  bar",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 5,
+			"length": 1,
+			"col_cp": 5,
+			"length_cp": 1
+		},
+		"message": "Wrong nodes separator\ntest#1:5/1\n    !\nfoo  bar"
+	},
+	{
+		"name": "wrong nodes separator triple space",
+		"uri": "test",
+		"input": "foo   bar\n",
+		"reason": "Wrong nodes separator",
+		"line": "foo   bar",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 5,
+			"length": 2,
+			"col_cp": 5,
+			"length_cp": 2
+		},
+		"message": "Wrong nodes separator\ntest#1:5/2\n    !!\nfoo   bar"
+	},
+	{
+		"name": "wrong nodes separator tab inline",
+		"uri": "test",
+		"input": "foo\tbar\n",
+		"reason": "Wrong nodes separator",
+		"line": "foo\tbar",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 4,
+			"length": 1,
+			"col_cp": 4,
+			"length_cp": 1
+		},
+		"message": "Wrong nodes separator\ntest#1:4/1\n   !\nfoo\tbar"
+	},
+	{
+		"name": "unexpected eof without lf",
+		"uri": "test",
+		"input": "\tfoo",
+		"reason": "Unexpected EOF, LF required",
+		"line": "\tfoo",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 5,
+			"length": 1,
+			"col_cp": 5,
+			"length_cp": 0
+		},
+		"message": "Unexpected EOF, LF required\ntest#1:5/1\n\t   !\n\tfoo"
+	},
+	{
+		"name": "unexpected eof after data",
+		"uri": "test",
+		"input": "\\foo",
+		"reason": "Unexpected EOF, LF required",
+		"line": "\\foo",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 5,
+			"length": 1,
+			"col_cp": 5,
+			"length_cp": 0
+		},
+		"message": "Unexpected EOF, LF required\ntest#1:5/1\n    !\n\\foo"
+	},
+	{
+		"name": "unexpected eof bare type",
+		"uri": "test",
+		"input": "foo",
+		"reason": "Unexpected EOF, LF required",
+		"line": "foo",
+		"span": {
+			"uri": "test",
+			"row": 1,
+			"col": 4,
+			"length": 1,
+			"col_cp": 4,
+			"length_cp": 0
+		},
+		"message": "Unexpected EOF, LF required\ntest#1:4/1\n   !\nfoo"
+	}
+]

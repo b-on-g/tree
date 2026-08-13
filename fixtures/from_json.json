@@ -1,0 +1,113 @@
+[
+	{
+		"name": "string",
+		"json": "hello",
+		"output": "\\hello\n"
+	},
+	{
+		"name": "multiline string",
+		"json": "a\nb",
+		"output": "\\a\n\\b\n"
+	},
+	{
+		"name": "number",
+		"json": 1,
+		"output": "1\n"
+	},
+	{
+		"name": "float",
+		"json": 1.5,
+		"output": "1.5\n"
+	},
+	{
+		"name": "true",
+		"json": true,
+		"output": "true\n"
+	},
+	{
+		"name": "false",
+		"json": false,
+		"output": "false\n"
+	},
+	{
+		"name": "null",
+		"json": null,
+		"output": "null\n"
+	},
+	{
+		"name": "empty object",
+		"json": {},
+		"output": "*\n"
+	},
+	{
+		"name": "object",
+		"json": {
+			"a": 1
+		},
+		"output": "* a 1\n"
+	},
+	{
+		"name": "object with two keys",
+		"json": {
+			"a": 1,
+			"b": 2
+		},
+		"output": "*\n\ta 1\n\tb 2\n"
+	},
+	{
+		"name": "nested object",
+		"json": {
+			"a": {
+				"b": 1
+			}
+		},
+		"output": "* a * b 1\n"
+	},
+	{
+		"name": "key needing escape",
+		"json": {
+			"a b": 1
+		},
+		"output": "* \\a b\n\t1\n"
+	},
+	{
+		"name": "key with newline",
+		"json": {
+			"a\nb": 1
+		},
+		"output": "* \\\n\t\\a\n\t\\b\n\t1\n"
+	},
+	{
+		"name": "empty array",
+		"json": [],
+		"output": "/\n"
+	},
+	{
+		"name": "array",
+		"json": [
+			"a",
+			"b"
+		],
+		"output": "/\n\t\\a\n\t\\b\n"
+	},
+	{
+		"name": "array of numbers",
+		"json": [
+			1,
+			2
+		],
+		"output": "/\n\t1\n\t2\n"
+	},
+	{
+		"name": "mixed",
+		"json": {
+			"list": [
+				1,
+				"two",
+				true,
+				null
+			]
+		},
+		"output": "* list /\n\t1\n\t\\two\n\ttrue\n\tnull\n"
+	}
+]

@@ -1,0 +1,100 @@
+[
+	{
+		"name": "replace by type path",
+		"input": "a b c d\n",
+		"insert": "x",
+		"path": [
+			"a",
+			"b",
+			"c"
+		],
+		"output": "a b x\n"
+	},
+	{
+		"name": "create missing type path",
+		"input": "a b\n",
+		"insert": "x",
+		"path": [
+			"a",
+			"b",
+			"c",
+			"d"
+		],
+		"output": "a b c x\n"
+	},
+	{
+		"name": "replace by index path",
+		"input": "a b c d\n",
+		"insert": "x",
+		"path": [
+			0,
+			0,
+			0
+		],
+		"output": "a b x\n"
+	},
+	{
+		"name": "extend by index path",
+		"input": "a b\n",
+		"insert": "x",
+		"path": [
+			0,
+			0,
+			0,
+			0
+		],
+		"output": "a b \\\n\tx\n"
+	},
+	{
+		"name": "replace by null path",
+		"input": "a b c d\n",
+		"insert": "x",
+		"path": [
+			null,
+			null,
+			null
+		],
+		"output": "a b x\n"
+	},
+	{
+		"name": "extend by null path",
+		"input": "a b\n",
+		"insert": "x",
+		"path": [
+			null,
+			null,
+			null,
+			null
+		],
+		"output": "a b \\\n\tx\n"
+	},
+	{
+		"name": "delete by type path",
+		"input": "a b c d\n",
+		"insert": null,
+		"path": [
+			"a",
+			"b",
+			"c"
+		],
+		"output": "a b\n"
+	},
+	{
+		"name": "delete by index path",
+		"input": "a b c d\n",
+		"insert": null,
+		"path": [
+			0,
+			0,
+			0
+		],
+		"output": "a b\n"
+	},
+	{
+		"name": "empty path replaces root",
+		"input": "a b\n",
+		"insert": "x",
+		"path": [],
+		"output": "x\n"
+	}
+]

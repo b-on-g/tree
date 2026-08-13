@@ -1,0 +1,175 @@
+[
+	{
+		"name": "multiline data splits into kids",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": [
+				{
+					"type": "",
+					"value": "a",
+					"kids": []
+				},
+				{
+					"type": "",
+					"value": "b",
+					"kids": []
+				},
+				{
+					"type": "",
+					"value": "c",
+					"kids": []
+				}
+			]
+		},
+		"output": "\\a\n\\b\n\\c\n"
+	},
+	{
+		"name": "multiline data with extra kids",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": [
+				{
+					"type": "",
+					"value": "a",
+					"kids": []
+				},
+				{
+					"type": "",
+					"value": "b",
+					"kids": []
+				},
+				{
+					"type": "x",
+					"value": "",
+					"kids": []
+				}
+			]
+		},
+		"output": "\\a\n\\b\nx\n"
+	},
+	{
+		"name": "struct with no kids",
+		"tree": {
+			"type": "foo",
+			"value": "",
+			"kids": []
+		},
+		"output": "foo\n"
+	},
+	{
+		"name": "struct with one kid collapses inline",
+		"tree": {
+			"type": "a",
+			"value": "",
+			"kids": [
+				{
+					"type": "b",
+					"value": "",
+					"kids": []
+				}
+			]
+		},
+		"output": "a b\n"
+	},
+	{
+		"name": "struct with two kids goes multiline",
+		"tree": {
+			"type": "a",
+			"value": "",
+			"kids": [
+				{
+					"type": "b",
+					"value": "",
+					"kids": []
+				},
+				{
+					"type": "c",
+					"value": "",
+					"kids": []
+				}
+			]
+		},
+		"output": "a\n\tb\n\tc\n"
+	},
+	{
+		"name": "list of structs",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": [
+				{
+					"type": "a",
+					"value": "",
+					"kids": []
+				},
+				{
+					"type": "b",
+					"value": "",
+					"kids": []
+				}
+			]
+		},
+		"output": "a\nb\n"
+	},
+	{
+		"name": "empty list",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": []
+		},
+		"output": ""
+	},
+	{
+		"name": "data at root",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": [
+				{
+					"type": "",
+					"value": "x",
+					"kids": []
+				}
+			]
+		},
+		"output": "\\x\n"
+	},
+	{
+		"name": "empty data at root",
+		"tree": {
+			"type": "",
+			"value": "",
+			"kids": [
+				{
+					"type": "",
+					"value": "",
+					"kids": []
+				}
+			]
+		},
+		"output": "\\\n"
+	},
+	{
+		"name": "nested data under struct",
+		"tree": {
+			"type": "a",
+			"value": "",
+			"kids": [
+				{
+					"type": "",
+					"value": "x",
+					"kids": []
+				},
+				{
+					"type": "",
+					"value": "y",
+					"kids": []
+				}
+			]
+		},
+		"output": "a\n\t\\x\n\t\\y\n"
+	}
+]

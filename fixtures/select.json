@@ -1,0 +1,98 @@
+[
+	{
+		"name": "by type",
+		"input": "a b c d\n",
+		"path": [
+			"a"
+		],
+		"output": "a b c d\n"
+	},
+	{
+		"name": "by type chain",
+		"input": "a b c d\n",
+		"path": [
+			"a",
+			"b"
+		],
+		"output": "b c d\n"
+	},
+	{
+		"name": "missing type",
+		"input": "a b c d\n",
+		"path": [
+			"z"
+		],
+		"output": ""
+	},
+	{
+		"name": "by index",
+		"input": "a\n\tx\n\ty\n\tz\n",
+		"path": [
+			"a",
+			1
+		],
+		"output": "y\n"
+	},
+	{
+		"name": "index out of range",
+		"input": "a\n\tx\n",
+		"path": [
+			"a",
+			5
+		],
+		"output": ""
+	},
+	{
+		"name": "null takes all kids",
+		"input": "a\n\tx\n\ty\n",
+		"path": [
+			"a",
+			null
+		],
+		"output": "x\ny\n"
+	},
+	{
+		"name": "null at root",
+		"input": "a\nb\n",
+		"path": [
+			null
+		],
+		"output": "a\nb\n"
+	},
+	{
+		"name": "deep null",
+		"input": "a b c d\n",
+		"path": [
+			"a",
+			"b",
+			"c",
+			null
+		],
+		"output": "d\n"
+	},
+	{
+		"name": "empty path returns self as list",
+		"input": "a b\n",
+		"path": [],
+		"output": "\\\n\ta b\n"
+	},
+	{
+		"name": "multiple same-type siblings",
+		"input": "a\n\tb x\n\tb y\n",
+		"path": [
+			"a",
+			"b"
+		],
+		"output": "b x\nb y\n"
+	},
+	{
+		"name": "mixed path",
+		"input": "a\n\tb\n\t\tc\n\t\td\n",
+		"path": [
+			"a",
+			"b",
+			1
+		],
+		"output": "d\n"
+	}
+]
