@@ -107,7 +107,7 @@
 			"col": 5,
 			"length": 1,
 			"col_cp": 5,
-			"length_cp": 0
+			"length_cp": 1
 		},
 		"message": "Unexpected EOF, LF required\ntest#1:5/1\n\t   !\n\tfoo"
 	},
@@ -123,7 +123,7 @@
 			"col": 5,
 			"length": 1,
 			"col_cp": 5,
-			"length_cp": 0
+			"length_cp": 1
 		},
 		"message": "Unexpected EOF, LF required\ntest#1:5/1\n    !\n\\foo"
 	},
@@ -139,7 +139,7 @@
 			"col": 4,
 			"length": 1,
 			"col_cp": 4,
-			"length_cp": 0
+			"length_cp": 1
 		},
 		"message": "Unexpected EOF, LF required\ntest#1:4/1\n   !\nfoo"
 	}

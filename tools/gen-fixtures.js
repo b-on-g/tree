@@ -34,13 +34,21 @@ function span_json( span, source ) {
 		line_start = next + 1
 	}
 	const offset = line_start + span.col - 1
+
+	// A span may reach past the end of the source — the one an "Unexpected EOF"
+	// error carries marks a character that is not there. Measuring only the
+	// slice would report 0 for it, so the part beyond the end is counted at its
+	// nominal width, where a code unit and a code point are the same thing.
+	const region = source.slice( offset, offset + span.length )
+	const beyond = span.length - region.length
+
 	return {
 		uri: span.uri,
 		row: span.row,
 		col: span.col,
 		length: span.length,
 		col_cp: 1 + cp_len( source.slice( line_start, offset ) ),
-		length_cp: cp_len( source.slice( offset, offset + span.length ) ),
+		length_cp: cp_len( region ) + beyond,
 	}
 }
 
@@ -379,23 +387,118 @@ write( 'reference_bugs', [
 		reference: 'pushes an undefined kid, then crashes on serialization',
 	},
 	{
-		name: 'empty update does not create a missing type path',
+		name: 'empty update does not create a missing two-step tail',
 		op: 'update',
 		input: 'a b\n',
 		update: [],
 		path: [ 'a', 'z', 'q' ],
 		output: 'a b\n',
-		reference: 'creates `z` anyway, because an empty array is truthy in JS',
+		reference: 'creates `z`, because an empty array is truthy in JS',
 	},
 	{
-		name: 'empty update leaves a missing single-step path alone',
+		name: 'empty update does not create a missing three-step tail',
 		op: 'update',
 		input: 'a b\n',
 		update: [],
-		path: [ 'z' ],
+		path: [ 'a', 'z', 'q', 'w' ],
 		output: 'a b\n',
-		reference: 'creates `z` anyway, because an empty array is truthy in JS',
+		reference: 'creates `z q`, because an empty array is truthy in JS',
+	},
+	{
+		name: 'dedented last line without a terminator still fails',
+		op: 'parse',
+		input: '\t\tfoo\n\tbar',
+		error: { reason: 'Too few tabs', row: 2, col: 1, length: 1 },
+		reference: 'returns the tree parsed so far, silently dropping the line',
+	},
+	{
+		name: 'deeply dedented last line without a terminator still fails',
+		op: 'parse',
+		input: '\t\ta\nb',
+		error: { reason: 'Too few tabs', row: 2, col: 1, length: 0 },
+		reference: 'throws RangeError: Invalid array length',
+	},
+	{
+		// Adding a newline must not change which error is reported.
+		name: 'dedented last line with a terminator fails the same way',
+		op: 'parse',
+		input: '\t\tfoo\n\tbar\n',
+		error: { reason: 'Too few tabs', row: 2, col: 1, length: 1 },
+		reference: 'agrees',
+	},
+	{
+		name: 'deleting an absent path is a no-op',
+		op: 'insert',
+		input: 'config\n\tport \\8080\n',
+		insert: null,
+		path: [ 'config', 'theme', 'dark' ],
+		output: 'config port \\8080\n',
+		reference: 'creates an empty `theme`, since insert(null) is update([])',
+	},
+	{
+		// The reference is already correct here — pinned so a port does not
+		// over-correct and start skipping legitimate creation.
+		name: 'empty update leaves a missing one-step tail alone',
+		op: 'update',
+		input: 'a b\n',
+		update: [],
+		path: [ 'a', 'z' ],
+		output: 'a b\n',
+		reference: 'agrees',
+	},
+	{
+		// Likewise: a non-empty update MUST still create the missing path.
+		// Note the last step is replaced by the value rather than created,
+		// because update with an empty path returns the value itself.
+		name: 'non-empty update still creates a missing path',
+		op: 'update',
+		input: 'a b\n',
+		update: [ 'x' ],
+		path: [ 'a', 'z', 'q' ],
+		output: 'a\n\tb\n\tz x\n',
+		reference: 'agrees',
 	},
 ] )
+
+// Cases tagged `reference: 'agrees'` are pinned so that a port does not
+// over-correct. Assert they really do match the reference, so a typo in an
+// expectation above cannot quietly send every port chasing a phantom.
+{
+	const bugs = JSON.parse( fs.readFileSync( path.join( out_dir, 'reference_bugs.json' ), 'utf8' ) )
+	const run = {
+		select: c => String( parse( c.input ).select( ...c.path ) ),
+		update: c => String( parse( c.input ).update( c.update.map( t => $mol_tree2.struct( t ) ), ...c.path )[ 0 ] ),
+		insert: c => String( parse( c.input ).insert( c.insert === null ? null : $mol_tree2.struct( c.insert ), ...c.path ) ),
+		// For a case that must fail, the "output" being compared is the reason.
+		parse: c => {
+			parse( c.input )
+			return '<parsed without error>'
+		},
+	}
+	for( const c of bugs ) {
+		const expected = c.op === 'parse' ? c.error.reason : c.output
+		let actual
+		try {
+			actual = run[ c.op ]( c )
+		} catch( error ) {
+			actual = error.reason ?? `<${ error.constructor.name }>`
+		}
+		const agrees = c.reference === 'agrees'
+		if( agrees && actual !== expected ) {
+			throw new Error(
+				`reference_bugs "${ c.name }" is tagged as agreeing with the reference, `
+				+ `but the reference gives ${ JSON.stringify( actual ) } `
+				+ `and the fixture expects ${ JSON.stringify( expected ) }`
+			)
+		}
+		if( !agrees && actual === expected ) {
+			throw new Error(
+				`reference_bugs "${ c.name }" claims the reference diverges, but it agrees`
+			)
+		}
+	}
+	console.log( `reference_bugs.json — ${ bugs.filter( c => c.reference !== 'agrees' ).length } divergences, `
+		+ `${ bugs.filter( c => c.reference === 'agrees' ).length } agreements re-checked` )
+}
 
 console.log( '\nfixtures regenerated' )

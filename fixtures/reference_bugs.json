@@ -22,7 +22,7 @@
 		"reference": "pushes an undefined kid, then crashes on serialization"
 	},
 	{
-		"name": "empty update does not create a missing type path",
+		"name": "empty update does not create a missing two-step tail",
 		"op": "update",
 		"input": "a b\n",
 		"update": [],
@@ -32,17 +32,96 @@
 			"q"
 		],
 		"output": "a b\n",
-		"reference": "creates `z` anyway, because an empty array is truthy in JS"
+		"reference": "creates `z`, because an empty array is truthy in JS"
 	},
 	{
-		"name": "empty update leaves a missing single-step path alone",
+		"name": "empty update does not create a missing three-step tail",
 		"op": "update",
 		"input": "a b\n",
 		"update": [],
 		"path": [
+			"a",
+			"z",
+			"q",
+			"w"
+		],
+		"output": "a b\n",
+		"reference": "creates `z q`, because an empty array is truthy in JS"
+	},
+	{
+		"name": "dedented last line without a terminator still fails",
+		"op": "parse",
+		"input": "\t\tfoo\n\tbar",
+		"error": {
+			"reason": "Too few tabs",
+			"row": 2,
+			"col": 1,
+			"length": 1
+		},
+		"reference": "returns the tree parsed so far, silently dropping the line"
+	},
+	{
+		"name": "deeply dedented last line without a terminator still fails",
+		"op": "parse",
+		"input": "\t\ta\nb",
+		"error": {
+			"reason": "Too few tabs",
+			"row": 2,
+			"col": 1,
+			"length": 0
+		},
+		"reference": "throws RangeError: Invalid array length"
+	},
+	{
+		"name": "dedented last line with a terminator fails the same way",
+		"op": "parse",
+		"input": "\t\tfoo\n\tbar\n",
+		"error": {
+			"reason": "Too few tabs",
+			"row": 2,
+			"col": 1,
+			"length": 1
+		},
+		"reference": "agrees"
+	},
+	{
+		"name": "deleting an absent path is a no-op",
+		"op": "insert",
+		"input": "config\n\tport \\8080\n",
+		"insert": null,
+		"path": [
+			"config",
+			"theme",
+			"dark"
+		],
+		"output": "config port \\8080\n",
+		"reference": "creates an empty `theme`, since insert(null) is update([])"
+	},
+	{
+		"name": "empty update leaves a missing one-step tail alone",
+		"op": "update",
+		"input": "a b\n",
+		"update": [],
+		"path": [
+			"a",
 			"z"
 		],
 		"output": "a b\n",
-		"reference": "creates `z` anyway, because an empty array is truthy in JS"
+		"reference": "agrees"
+	},
+	{
+		"name": "non-empty update still creates a missing path",
+		"op": "update",
+		"input": "a b\n",
+		"update": [
+			"x"
+		],
+		"path": [
+			"a",
+			"z",
+			"q"
+		],
+		"output": "a\n\tb\n\tz x\n",
+		"reference": "agrees"
 	}
 ]

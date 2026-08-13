@@ -201,8 +201,7 @@ while pos < len(source):
         sp := span(row, 1, pos - line_start)
         skip pos forward to the next '\n' (or end)
         if indent < 0:
-            if pos < len(source):
-                fail SyntaxError("Too few tabs", source[line_start .. pos], sp)
+            fail SyntaxError("Too few tabs", source[line_start .. pos], sp)
         else:
             fail SyntaxError("Too many tabs", source[line_start .. pos], sp)
 
@@ -258,6 +257,13 @@ Notes that are easy to get wrong:
 
 * The `indent >= len(stack)` bound is checked **before** the stack is truncated,
   against the length left by the previous line.
+* `Too few tabs` is raised unconditionally. The reference suppresses it when the
+  offending line is also the unterminated last line of the document, with bad
+  consequences — see [Known reference bugs](#known-reference-bugs). A missing
+  final newline is an error in its own right, but it MUST NOT mask an
+  indentation error that the same source reports once the newline is there.
+  Note this is narrower than "appending a newline never changes the error":
+  appending one is exactly what *fixes* `Unexpected EOF, LF required`.
 * The separator check runs at the top of every iteration of the struct loop, so
   the *second* of two consecutive spaces is what trips it. This also means a
   leading space (line not starting with a tab) is reported at column 1.
@@ -526,39 +532,93 @@ input.
 
 ## Known reference bugs
 
-Two behaviours of the reference are defects rather than semantics. Ports MUST
-implement the corrected behaviour, which `fixtures/reference_bugs.json` pins.
-These are worth reporting upstream.
+Three places where a port cannot simply follow the reference.
+`fixtures/reference_bugs.json` pins the required port behaviour, and also pins
+the neighbouring cases where the reference is right, so that a port does not
+over-correct.
 
-### A negative index step in `select` yields a hole
+### A missing final newline can swallow a line, or crash
 
-The bound check is `i < len(kids)` with no lower bound, so `select('a', -1)`
-indexes past the start of the array, and JavaScript hands back `undefined`
-rather than failing. The result is a list node containing a hole, which then
-crashes with a `TypeError` the moment anything reads it:
+`Too few tabs` is raised only `if( str.length > pos )` — that is, only when the
+offending line is not the last one in an unterminated document. The intent was
+presumably to be lenient about a trailing fragment. The effect is that the check
+falls through to `stack.length = indent + 1` with a negative `indent`:
+
+* `indent == -1` sets the stack length to 0, which then makes the later
+  `stack.length > 0` guard on the EOF check false, so **no error is raised at
+  all** and the line is silently dropped;
+* `indent <= -2` sets it to -1, which is `RangeError: Invalid array length`.
+
+Deleting the trailing newline from a file therefore turns a clean syntax error
+into either lost content or an unrelated crash:
+
+| input | reference |
+|---|---|
+| `\t\tfoo\n\tbar\n` | `Too few tabs` |
+| `\t\tfoo\n\tbar` | returns `foo\n` — `bar` is gone, no error |
+| `\t\ta\nb\n` | `Too few tabs` |
+| `\t\ta\nb` | `RangeError: Invalid array length` |
+
+**Ports:** raise `Too few tabs` unconditionally, so that a missing final newline
+cannot mask an indentation error. This is the one bug of the three that loses
+data.
+
+### An out-of-range index step in `select` yields a hole
+
+The bound check is `i < len(kids)` with no lower bound. A negative `i` therefore
+passes it, JavaScript hands back `undefined` rather than failing, and the result
+is a list node containing a hole that crashes the moment anything reads it — far
+from where the index came from, with a message naming neither the path nor the
+node:
 
 ```js
-$mol_tree2_from_string( 'a\n\tx\n\ty\n', 't' ).select( 'a', -1 ).toString()
+const kids = tree.select( 'app', null ).kids
+tree.select( 'app', kids.length - 1 )   // kids is empty → index -1
 // TypeError: Cannot read properties of undefined (reading 'type')
 ```
 
+Nobody writes `-1` by hand; it arrives from `length - 1` on an empty list, or
+from `findIndex`/`indexOf` missing. This one is mostly a robustness defect —
+but a port has to define the behaviour regardless, because a negative index is
+not even representable against a `Vec`/slice without a decision.
+
 **Ports:** treat any `i` outside `0 <= i < len(kids)` as no match.
 
-### An empty `update` creates the node it was asked not to create
+### Deleting an absent path creates it
 
-`update` guards the create-missing branch with `if( !replaced && value )`, but
-`value` is an array, and `[]` is truthy in JavaScript. Updating a path to
-*nothing* therefore materialises that path instead of leaving it alone:
+`insert(value, ...path)` is `update(maybe(value), ...path)`, and `maybe(null)`
+is `[]` — so **deleting is updating to an empty list**. But `update` guards its
+create-missing branch with `if( !replaced && value )`, and `[]` is truthy in
+JavaScript. Removing a setting that is not there therefore adds it:
 
 ```js
-$mol_tree2_from_string( 'a b\n', 't' ).update( [], 'a', 'z', 'q' )[0].toString()
-// 'a\n\tb\n\tz\n'   — expected 'a b\n'
+const config = $mol_tree2_from_string( 'config\n\tport \\8080\n', 't' )
+config.insert( null, 'config', 'theme', 'dark' ).toString()
+// 'config\n\tport \\8080\n\ttheme\n'   — expected 'config port \\8080\n'
 ```
 
-The reference's own tests miss this because they only ever update paths that
+The node is created only when at least one more step follows it, because the
+final step is *replaced* by the value rather than created, and an empty value
+list replaces it with nothing. So a one-step tail is a no-op and the bug starts
+at two:
+
+| path missing from `a b` | reference | expected |
+|---|---|---|
+| `a, z` | `a b` ✅ | `a b` |
+| `a, z, q` | `a` + `b` + `z` ❌ | `a b` |
+| `a, z, q, w` | `a` + `b` + `z q` ❌ | `a b` |
+
+The reference's own tests miss this because they only ever delete paths that
 already exist.
 
-**Ports:** create the missing path only when `values` is non-empty.
+**Ports:** take the create-missing branch only when `values` is non-empty. Do
+not go further than that — a non-empty `update` MUST still create the missing
+path, last step included:
+
+```js
+$mol_tree2_from_string( 'a b\n', 't' ).update( [ struct('x') ], 'a', 'z', 'q' )[0]
+// 'a\n\tb\n\tz x\n'   — `z` created, `q` replaced by `x`
+```
 
 ---
 
