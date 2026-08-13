@@ -1,3 +1,3 @@
-module github.com/b-on-g/tree2/go
+module github.com/b-on-g/tree/go
 
 go 1.24

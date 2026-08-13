@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	tree2 "github.com/b-on-g/tree2/go"
+	tree2 "github.com/b-on-g/tree/go"
 )
 
 // The conformance corpus lives in the repository root and is shared by every

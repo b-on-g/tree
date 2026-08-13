@@ -521,7 +521,7 @@ spells things.
 | | crate/module | parse | serialize |
 |---|---|---|---|
 | Rust | `tree2` | `tree2::parse` | `Display` for `Tree` |
-| Go | `github.com/b-on-g/tree2/go` → package `tree2` | `tree2.Parse` | `String()` |
+| Go | `github.com/b-on-g/tree/go` → package `tree2` | `tree2.Parse` | `String()` |
 | Python | `tree2` | `tree2.parse` | `str(tree)` |
 
 Errors follow the host language: `Result<_, SyntaxError>` in Rust, an `error`

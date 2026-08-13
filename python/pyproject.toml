@@ -28,9 +28,9 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/b-on-g/tree2"
-Repository = "https://github.com/b-on-g/tree2"
-Specification = "https://github.com/b-on-g/tree2/blob/master/SPEC.md"
+Homepage = "https://github.com/b-on-g/tree"
+Repository = "https://github.com/b-on-g/tree"
+Specification = "https://github.com/b-on-g/tree/blob/master/SPEC.md"
 Reference = "https://github.com/hyoo-ru/mam_mol/tree/master/tree2"
 
 [project.optional-dependencies]

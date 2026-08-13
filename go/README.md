@@ -6,11 +6,11 @@ is [`SPEC.md`](../SPEC.md) in the repository root; the shared conformance
 corpus is [`fixtures/`](../fixtures), which this package's tests read directly.
 
 ```sh
-go get github.com/b-on-g/tree2/go
+go get github.com/b-on-g/tree/go
 ```
 
 ```go
-import tree2 "github.com/b-on-g/tree2/go"
+import tree2 "github.com/b-on-g/tree/go"
 ```
 
 ## Parsing and serializing

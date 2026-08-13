@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	tree2 "github.com/b-on-g/tree2/go"
+	tree2 "github.com/b-on-g/tree/go"
 )
 
 func TestSpanConstructors(t *testing.T) {
