@@ -528,6 +528,27 @@ Errors follow the host language: `Result<_, SyntaxError>` in Rust, an `error`
 return in Go, an exception in Python. A port MUST NOT panic/abort on malformed
 input.
 
+### The two field names
+
+The node's two fields keep the reference's words, `type` and `value`, even
+though `type` is a reserved word in some of the target languages. Each port
+escapes it the way its own language does — Go stores `typ` and exposes `Type()`,
+Rust calls it `kind`, Python keeps `type` — and that is the only concession.
+
+Two renames get proposed often enough to answer here:
+
+* **`type` → `name`.** Tempting, since it sidesteps the keyword everywhere. Not
+  taken: the format's own documentation, the D implementation and every existing
+  `.tree` toolchain say *type*, and a port that renames it stops reading
+  alongside them.
+* **`value` → `data`.** Not taken, and it would not even compile cleanly. In the
+  format's vocabulary the two words are not synonyms — a *data node* is what
+  carries a *value* — and `data` is already the name of the factory that makes
+  one. An accessor called `data` collides with that factory in all three
+  languages: with the derived `Data` method in Go, with `Tree::data` in the same
+  Rust `impl`, and with the `data` staticmethod on the Python dataclass. Keeping
+  `value` costs nothing and keeps the factory where the format put it.
+
 ---
 
 ## Known reference bugs
